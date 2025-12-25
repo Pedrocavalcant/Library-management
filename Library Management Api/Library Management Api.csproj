@@ -12,8 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="DTO\" />
+    <Folder Include="DALs\" />
+    <Folder Include="Validations\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
