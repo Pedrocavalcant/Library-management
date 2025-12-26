@@ -1,8 +1,7 @@
-﻿namespace Library_Management_Api.Models;
+﻿namespace Library_Management_Api.DTO;
 
-public class BookModel
+public class ConsultaLivroDto
 {
-    public Guid Id { get; set; }
     public string Title { get; set; }
     public string Author { get; set; }
     public string Genre { get; set; }

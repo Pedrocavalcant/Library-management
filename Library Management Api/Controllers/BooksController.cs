@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Library_Management_Api.Models;
+using Library_Management_Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library_Management_Api.Controllers;
@@ -6,9 +7,19 @@ namespace Library_Management_Api.Controllers;
 [ApiController]
 public class BooksController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetAll()
+    private readonly BookService _bookService;
+
+    public BooksController(BookService bookService)
     {
-        return Ok();
+        _bookService = bookService;
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(BookModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _bookService._consultaLivro.BuscarLivros();
+        return Ok(result);
     }
 }
