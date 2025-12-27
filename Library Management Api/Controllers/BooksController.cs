@@ -1,4 +1,5 @@
-﻿using Library_Management_Api.Models;
+﻿using Library_Management_Api.DTO;
+using Library_Management_Api.Models;
 using Library_Management_Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,5 +22,23 @@ public class BooksController : ControllerBase
     {
         var result = await _bookService._consultaLivro.BuscarLivros();
         return Ok(result);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(CriarLivroDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateBook([FromBody] CriarLivroDto dto)
+    {
+        var result = await _bookService._criarLivro.AdicionarLivro(dto);
+        return Created("", result);
+    }
+
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateBook([FromBody] ConsultaLivroDto dto)
+    {
+        var result = await _bookService._atualizarLivro.AtualizarLivro(dto);
+        return NoContent();
     }
 }
