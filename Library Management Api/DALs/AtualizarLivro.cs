@@ -4,9 +4,8 @@ namespace Library_Management_Api.DALs;
 
 public class AtualizarLivro
 {
-    public async Task<bool> AlterarLivro(UpdateLivroDto dto)
+    public void AlterarLivro(Guid id, UpdateLivroDto dto)
     {
-        await Task.CompletedTask;
-        return true;
+
     }
 }

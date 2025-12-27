@@ -2,5 +2,5 @@
 
 public class UpdateLivroDto : ConsultaLivroDto
 {
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

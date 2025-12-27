@@ -1,4 +1,5 @@
-﻿using Library_Management_Api.DTO;
+﻿using Library_Management_Api.DALs;
+using Library_Management_Api.DTO;
 using Library_Management_Api.Models;
 using Library_Management_Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ public class BooksController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll()
     {
-        var result = _bookService._consultaLivro.BuscarLivros();
+        var result = await _bookService._consultaLivro.BuscarLivros();
         return Ok(result);
     }
 
@@ -29,7 +30,7 @@ public class BooksController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBook([FromBody] CriarLivroDto dto)
     {
-        var result = _bookService._criarLivro.AdicionarLivro(dto);
+        var result = await _bookService._criarLivro.AdicionarLivro(dto);
         return Created("", result);
     }
 
@@ -37,9 +38,12 @@ public class BooksController : ControllerBase
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateBook([FromQuery]int Id, [FromBody] UpdateLivroDto dto)
+    public async Task<IActionResult> UpdateBook([FromRoute] Guid id, [FromBody] UpdateLivroDto dto)
     {
-        var result = _bookService._atualizarLivro.AlterarLivro(dto);
+        var useCase = new AtualizarLivro();
+
+        useCase.AlterarLivro(id, dto);
+
         return NoContent();
     }
 
@@ -47,9 +51,9 @@ public class BooksController : ControllerBase
     [Route("{id}")]
     [ProducesResponseType(typeof(CriarLivroDto), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteBook([FromQuery]int Id)
+    public async Task<IActionResult> DeleteBook([FromRoute] Guid id)
     {
-        var result = _bookService._deletarLivro.RemoverLivro(Id);
+        var result = await _bookService._deletarLivro.RemoverLivro(id);
         return NoContent();
     }
 
@@ -59,7 +63,7 @@ public class BooksController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetBookByID([FromQuery] Guid Id)
     {
-        var result = _bookService._consultaLivroId.BuscarLivro(Id);
+        var result = await _bookService._consultaLivroId.BuscarLivro(Id);
         return Ok(result);
     }
 }
