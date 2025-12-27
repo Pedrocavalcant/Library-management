@@ -37,7 +37,7 @@ public class BooksController : ControllerBase
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateBook([FromQuery]int Id, [FromBody] ConsultaLivroDto dto)
+    public async Task<IActionResult> UpdateBook([FromQuery]int Id, [FromBody] UpdateLivroDto dto)
     {
         var result = _bookService._atualizarLivro.AlterarLivro(dto);
         return NoContent();
