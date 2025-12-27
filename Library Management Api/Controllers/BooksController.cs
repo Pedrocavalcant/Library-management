@@ -20,7 +20,7 @@ public class BooksController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _bookService._consultaLivro.BuscarLivros();
+        var result = _bookService._consultaLivro.BuscarLivros();
         return Ok(result);
     }
 
@@ -29,16 +29,37 @@ public class BooksController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBook([FromBody] CriarLivroDto dto)
     {
-        var result = await _bookService._criarLivro.AdicionarLivro(dto);
+        var result = _bookService._criarLivro.AdicionarLivro(dto);
         return Created("", result);
     }
 
     [HttpPut]
+    [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateBook([FromBody] ConsultaLivroDto dto)
+    public async Task<IActionResult> UpdateBook([FromQuery]int Id, [FromBody] ConsultaLivroDto dto)
     {
-        var result = await _bookService._atualizarLivro.AtualizarLivro(dto);
+        var result = _bookService._atualizarLivro.AlterarLivro(dto);
         return NoContent();
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    [ProducesResponseType(typeof(CriarLivroDto), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteBook([FromQuery]int Id)
+    {
+        var result = _bookService._deletarLivro.RemoverLivro(Id);
+        return NoContent();
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    [ProducesResponseType(typeof(BookModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetBookByID([FromQuery] Guid Id)
+    {
+        var result = _bookService._consultaLivroId.BuscarLivro(Id);
+        return Ok(result);
     }
 }
